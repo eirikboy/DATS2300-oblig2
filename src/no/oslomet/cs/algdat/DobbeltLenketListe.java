@@ -40,23 +40,16 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     private Node<T> finnNode(int indeks) {
         Node<T> node;
-        if (indeks < antall() / 2) {
+        if (indeks < antall/ 2) {
             node = hode;
             for (int i = 0; i < indeks; i++) {
-                if (i == indeks) {
-                    return node;
-                } else {
-                    node = node.neste;
-                }
+                node = node.neste;
             }
         } else {
             node = hale;
-            for (int i = 0; i < indeks; i++) {
-                if (i == indeks) {
-                    return node;
-                } else {
-                    node = node.forrige;
-                }
+
+            for (int i = indeks; i < antall-1; i++) {
+                node = node.forrige;
             }
         }
         return node;
@@ -102,26 +95,29 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         fratilKontroll(antall(), fra, til);
         T[] sub = (T[]) new Object[til - fra];
         int j = 0;
-        //antall = 0;
-        for(int i = fra; i < til; i++){
-            sub[j] = finnNode(i).verdi;
+        endringer = 0;
+        Node<T> node = finnNode(fra);
+
+        for (int i = fra; i < til; i++) {
+            sub[j] = node.verdi;
+            node = node.neste;
             j++;
-            antall++;
         }
         DobbeltLenketListe<T> nyListe = new DobbeltLenketListe<>(sub);
         return nyListe;
 
     }
-    private void fratilKontroll(int antall, int fra, int til){
-        if (fra < 0){
+
+    private void fratilKontroll(int antall, int fra, int til) {
+        if (fra < 0) {
             throw new IndexOutOfBoundsException("Fra (" + fra + ") er negativt!");
         }
 
-        if (til > antall){
+        if (til > antall) {
             throw new IndexOutOfBoundsException("Til (" + til + ") er størren enn antall (" + antall + ")!");
         }
 
-        if (fra > til){
+        if (fra > til) {
             throw new IllegalArgumentException("Fra (" + fra + ") er større enn til (" + til + ")!");
         }
     }
@@ -169,7 +165,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     @Override
     public T hent(int indeks) {
         indeksKontroll(indeks, false);
-        return (T) finnNode(indeks);
+        return finnNode(indeks).verdi;
     }
 
     @Override

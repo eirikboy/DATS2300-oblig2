@@ -30,5 +30,6 @@ public class Oppgave0 {
         System.out.println(liste.subliste(3,8));
         System.out.println(liste.subliste(5,5));
         System.out.println(liste.subliste(8,liste.antall()));
+
     }
 }
