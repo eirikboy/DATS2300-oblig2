@@ -2,8 +2,9 @@
 
 Denne oppgaven er en innlevering i Algoritmer og Datastrukturer. 
 Oppgaven er levert av følgende studenter:
-* Navn Navnesen, S981737, s981737@oslomet.no
-* ...
+* Eirik Bøyum, s170002, s170002@oslomet.no
+* Siri C Dybdahl, s330530, s330530@oslomet.no
+* Ole Halvor Egenæs, s331403, s331403@oslomet.no
 
 # Arbeidsfordeling
 
