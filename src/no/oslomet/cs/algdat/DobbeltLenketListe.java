@@ -204,9 +204,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     @Override
-    public T fjern(int indeks) {
-        throw new NotImplementedException();
-    }
+    public T fjern(int indeks) { throw new NotImplementedException(); }
 
     @Override
     public void nullstill() {
@@ -250,7 +248,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     public Iterator<T> iterator(int indeks) {
-        throw new NotImplementedException();
+        indeksKontroll(indeks, false);
+        return new DobbeltLenketListeIterator(indeks);
+
     }
 
     private class DobbeltLenketListeIterator implements Iterator<T> {
@@ -293,6 +293,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
             return value;
         }
+
+
 
         @Override
         public void remove() {
