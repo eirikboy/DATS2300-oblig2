@@ -261,7 +261,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     @Override
     public T fjern(int indeks) {
         if(antall == 0 || indeks < 0 || antall <= indeks) {
-            System.out.println(antall + " " + indeks);
             throw new IndexOutOfBoundsException();
         }
         if(antall == 1) {
@@ -464,7 +463,14 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     } // class DobbeltLenketListeIterator
 
     public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
-        
+        for (int i = 0; i < liste.antall(); i++){
+            int sjekk = c.compare(liste.hent(i),  liste.hent(i+1));
+            if (sjekk > 0){
+                for (int j = i; j < liste.antall(); j++){
+                    //liste.oppdater();
+                }
+            }
+        }
     }
 
 } // class DobbeltLenketListe
