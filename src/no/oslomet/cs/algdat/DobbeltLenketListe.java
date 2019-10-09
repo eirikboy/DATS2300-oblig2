@@ -204,7 +204,9 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     @Override
-    public T fjern(int indeks) { throw new NotImplementedException(); }
+    public T fjern(int indeks) {
+        throw new NotImplementedException();
+    }
 
     @Override
     public void nullstill() {
@@ -244,13 +246,11 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new DobbeltLenketListeIterator();
+        throw new NotImplementedException();
     }
 
     public Iterator<T> iterator(int indeks) {
-        indeksKontroll(indeks, false);
-        return new DobbeltLenketListeIterator(indeks);
-
+        throw new NotImplementedException();
     }
 
     private class DobbeltLenketListeIterator implements Iterator<T> {
@@ -258,43 +258,23 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         private boolean fjernOK;
         private int iteratorendringer;
 
-
-        private DobbeltLenketListeIterator(int indeks) {
-            denne = finnNode(indeks);
-
-            fjernOK = false;
-            iteratorendringer = endringer;
-
+        private DobbeltLenketListeIterator() {
+            throw new NotImplementedException();
         }
 
-
-        private DobbeltLenketListeIterator(){
-            denne = hode;     // p starter på den første i listen
-            fjernOK = false;  // blir sann når next() kalles
-            iteratorendringer = endringer;  // teller endringer
+        private DobbeltLenketListeIterator(int indeks) {
+            throw new NotImplementedException();
         }
 
         @Override
         public boolean hasNext() {
-            return denne != null;
+            throw new NotImplementedException();
         }
 
         @Override
         public T next() {
-            if (iteratorendringer != endringer) {
-                throw new ConcurrentModificationException();
-            }
-            if (hasNext() != true) {
-                throw new NoSuchElementException();
-            }
-            fjernOK = true;
-            T value = denne.verdi;
-            denne = denne.neste;
-
-            return value;
+            throw new NotImplementedException();
         }
-
-
 
         @Override
         public void remove() {
