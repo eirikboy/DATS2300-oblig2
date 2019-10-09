@@ -200,11 +200,83 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean fjern(T verdi) {
-        throw new NotImplementedException();
+        if(verdi == null || antall == 0)
+            return false;
+        Node<T> current = hode;
+        if(hode.verdi.equals(verdi)) {
+            if(antall == 1) {
+                hode = hale = null;
+            }
+            else {
+                hode.neste.forrige = null;
+                hode = hode.neste;
+            }
+            antall--;
+            endringer++;
+            return true;
+        }
+        for(int scan=0; scan<antall; scan++) {
+            if(current.verdi.equals(verdi)) {
+                if(scan == antall-1) {
+                    hale.forrige.neste = null;
+                    hale = hale.forrige;
+                }
+                else {
+                    current.forrige.neste = current.neste;
+                    current.neste.forrige = current.forrige;
+                }
+                antall--;
+                endringer++;
+                return true;
+            }
+            else {
+                current = current.neste;
+            }
+        }
+        return false;
     }
 
     @Override
-    public T fjern(int indeks) { throw new NotImplementedException(); }
+    public T fjern(int indeks) {
+        if(antall == 0 || indeks < 0 || antall <= indeks) {
+            System.out.println(antall + " " + indeks);
+            throw new IndexOutOfBoundsException();
+        }
+        if(antall == 1) {
+            antall--;
+            endringer++;
+            T verdi = hode.verdi;
+            hode = hale = null;
+            return verdi;
+        }
+        T verdi;
+        antall--;
+        endringer++;
+        if(indeks == 0){
+            verdi = hode.verdi;
+            hode.neste.forrige = null;
+            hode = hode.neste;
+        }
+        else if(indeks == antall) {
+            verdi = hale.verdi;
+            hale.forrige.neste = null;
+            hale = hale.forrige;
+        }
+        else {
+            Node<T> node = hode;
+            for(int scan=0; scan<indeks; scan++) {
+                node = node.neste;
+            }
+            verdi = node.verdi;
+            node.forrige.neste = node.neste;
+            node.neste.forrige = node.forrige;
+        }
+        if(antall == 0) {
+            hode = hale = null;
+        }
+        return verdi;
+
+        }
 
     @Override
     public void nullstill() {
