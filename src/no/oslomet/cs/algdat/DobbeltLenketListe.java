@@ -464,8 +464,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     } // class DobbeltLenketListeIterator
 
     public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
-
-            }
+        
     }
 
 } // class DobbeltLenketListe
