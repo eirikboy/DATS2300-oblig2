@@ -9,8 +9,7 @@ Oppgaven er levert av følgende studenter:
 # Arbeidsfordeling
 
 I oppgaven har vi hatt følgende arbeidsfordeling:
-* Eirik har gjort oppgave 0,1,2,3,4,5,6 
+* Eirik har gjort oppgave 0,1,2,3,4,5,6,7 
 * Ole har gjordt oppgave 0,1,2,3,4,5,6 
 * Siri har gjort oppgave 8, 9 
-*  
 
