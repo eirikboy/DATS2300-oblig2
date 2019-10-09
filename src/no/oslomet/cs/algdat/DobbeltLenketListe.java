@@ -222,6 +222,32 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean fjern(T verdi) {
+
+        if(verdi == null || antall == 0)
+            return false;
+        Node<T> current = hode;
+        if(hode.verdi.equals(verdi)) {
+            if(antall == 1) {
+                hode = hale = null;
+            }
+            else {
+                hode.neste.forrige = null;
+                hode = hode.neste;
+            }
+            antall--;
+            endringer++;
+            return true;
+        }
+        for(int scan=0; scan<antall; scan++) {
+            if(current.verdi.equals(verdi)) {
+                if(scan == antall-1) {
+                    hale.forrige.neste = null;
+                    hale = hale.forrige;
+                }
+                else {
+                    current.forrige.neste = current.neste;
+                    current.neste.forrige = current.forrige;
+
         if (verdi == null) {
             return false;
         }
@@ -242,12 +268,19 @@ public class DobbeltLenketListe<T> implements Liste<T> {
                 } else {
                     node.forrige.neste = node.neste;
                     node.neste.forrige = node.forrige;
+
                 }
                 antall--;
                 endringer++;
                 return true;
+
+            }
+            else {
+                current = current.neste;
+
             } else {
                 node = node.neste;
+
             }
         }
         return false;
@@ -255,6 +288,47 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public T fjern(int indeks) {
+
+        if(antall == 0 || indeks < 0 || antall <= indeks) {
+            System.out.println(antall + " " + indeks);
+            throw new IndexOutOfBoundsException();
+        }
+        if(antall == 1) {
+            antall--;
+            endringer++;
+            T verdi = hode.verdi;
+            hode = hale = null;
+            return verdi;
+        }
+        T verdi;
+        antall--;
+        endringer++;
+        if(indeks == 0){
+            verdi = hode.verdi;
+            hode.neste.forrige = null;
+            hode = hode.neste;
+        }
+        else if(indeks == antall) {
+            verdi = hale.verdi;
+            hale.forrige.neste = null;
+            hale = hale.forrige;
+        }
+        else {
+            Node<T> node = hode;
+            for(int scan=0; scan<indeks; scan++) {
+                node = node.neste;
+            }
+            verdi = node.verdi;
+            node.forrige.neste = node.neste;
+            node.neste.forrige = node.forrige;
+        }
+        if(antall == 0) {
+            hode = hale = null;
+        }
+        return verdi;
+
+        }
+              
         indeksKontroll(indeks, false);
         Node<T> node = finnNode(indeks);
         if (indeks == 0){
@@ -275,6 +349,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         endringer++;
         return node.verdi;
     }
+
 
     @Override
     public void nullstill() {
@@ -395,8 +470,47 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         @Override
         public void remove() {
-            throw new NotImplementedException();
+            if(!fjernOK){
+                throw new IllegalStateException();
+            }
+            if(iteratorendringer != endringer){
+                throw new ConcurrentModificationException();
+            }
+            fjernOK = false;
+            Node<T> slett = hode;
+            if(antall == 1){
+                hode = null;
+                hale = null;
+            }
+
+            else if(denne == null){
+                slett = hale;
+                hale = hale.forrige;
+                hale.neste = null;
+            }
+
+            else if(denne.forrige == null){
+                slett = hode;
+                hode = hode.neste;
+                hode.forrige = null;
+            }
+
+            else{
+                slett = denne.forrige;
+                slett.forrige.neste = slett.neste;
+                slett.neste.forrige = slett.forrige;
+            }
+            slett.verdi = null;
+            slett.forrige = null;
+            slett.neste = null;
+
+            endringer++;
+            iteratorendringer++;
+            antall --;
+
         }
+
+
 
     } // class DobbeltLenketListeIterator
 
