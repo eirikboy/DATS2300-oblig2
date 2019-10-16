@@ -7,6 +7,7 @@ package no.oslomet.cs.algdat;
 import sun.reflect.generics.reflectiveObjects.GenericArrayTypeImpl;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.swing.*;
 import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.NoSuchElementException;
@@ -63,21 +64,21 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     private int endringer;         // antall endringer i listen
 
     public DobbeltLenketListe() {
-
+        hode = null;
+        hale = null;
+        antall = 0;
+        endringer = 0;
     }
 
     public DobbeltLenketListe(T[] a) {
         if (a == null) {//alternativt Objects.requireNonNull(a, "Tabellen a er null!");
             throw new NullPointerException("Tabellen a er null!");
         } else {
-            hode = null;
-            hale = null;
-            antall = 0;
 
             for (int i = 0; i < a.length; i++) {
                 if (hode == null) {
                     if (a[i] != null) {
-                        hode = new Node<>(a[i], null, null);
+                        hode = new Node<>(a[i], null, hale);
                         hale = hode;
                         antall++;
                     }
@@ -140,44 +141,57 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     @Override
     public boolean leggInn(T verdi) {
         Objects.requireNonNull(verdi, "Null-verdier er ikke tillatt!");
-        if (hode == null) {
-            hode = new Node<>(verdi, null, null);
+        if (antall == 0) {
+            hode = new Node<>(verdi, null, hale);
             hale = hode;
-            antall++;
-            return true;
+//            hode = hale = new Node<>(verdi);
         } else {
             hale.neste = new Node<>(verdi, hale, null);
             hale = hale.neste;
-            antall++;
-            return true;
+//            hale = hale.neste = new Node<>( verdi);
         }
+        System.out.println("boolean" + antall);
+        antall++;
+        endringer++;
+        return true;
     }
 
     @Override
     public void leggInn(int indeks, T verdi) {
         Objects.requireNonNull(verdi, "Null-verdier er ikke tillatt!");
-        indeksKontroll(indeks, false);
 
-        /*if (!(0 <= indeks && indeks <= antall)){
+        if (!(0 <= indeks && indeks <= antall)){
             throw new IndexOutOfBoundsException("Feil indeks");
-        }*/
-        Node<T> node = finnNode(indeks);
-        if (node.equals(hode)) {//Ny første verdi, hode
-            hode.neste = hode;
-            hode.verdi = verdi;
-        } else if (indeks == antall + 1) {//Ny siste verdi, hale
+        }
+
+        Node<T> node = new Node<>(verdi);
+        if (tom()){//Tom liste
             leggInn(verdi);
-        } else if (tom()) {
+            return;
+        } else if (indeks == 0){//Legges på første plass
+            node.neste = hode;
+            node.forrige = null;
+            if (hode != null){
+                hode.forrige = node;
+            }
+            hode = node;
+        } else if (indeks == antall){//Legges bakerst
             leggInn(verdi);
-        } else { //Midt mellom
-            node.forrige.neste.verdi = verdi;
-            node.neste = node;
-            node.verdi = verdi;
+            return;
+        } else {//Legges i mellom
+            Node<T> finn = hode;
+            for (int i = 0; i < indeks-1; i++){
+                finn = finn.neste;
+            }
+            node.neste = finn.neste;
+            node.forrige = finn;
+            finn.neste = node;
+            node.neste.forrige = node;
         }
         antall++;
         endringer++;
-
     }
+
 
     @Override
     public boolean inneholder(T verdi) {
