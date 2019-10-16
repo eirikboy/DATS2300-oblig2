@@ -144,13 +144,10 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         if (antall == 0) {
             hode = new Node<>(verdi, null, hale);
             hale = hode;
-//            hode = hale = new Node<>(verdi);
         } else {
             hale.neste = new Node<>(verdi, hale, null);
             hale = hale.neste;
-//            hale = hale.neste = new Node<>( verdi);
         }
-        System.out.println("boolean" + antall);
         antall++;
         endringer++;
         return true;
