@@ -49,7 +49,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             }
         } else {
             node = hale;
-
             for (int i = indeks; i < antall - 1; i++) {
                 node = node.forrige;
             }
@@ -227,7 +226,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         Node<T> hentNode = finnNode(indeks);
         T returVerdi = hentNode.verdi;
         hentNode.verdi = nyverdi;
-
+        endringer++;
         return returVerdi;
     }
 
@@ -455,13 +454,15 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             }
 
             else{
-                slett = denne.forrige;
-                slett.forrige.neste = slett.neste;
-                slett.neste.forrige = slett.forrige;
+//                slett = denne.forrige;
+//                slett.forrige.neste = slett.neste;
+//                slett.neste.forrige = slett.forrige;
+                denne.forrige = denne.forrige.forrige;
+                denne.forrige.forrige.neste = denne;
             }
-            slett.verdi = null;
-            slett.forrige = null;
-            slett.neste = null;
+//            slett.verdi = null;
+//            slett.forrige = null;
+//            slett.neste = null;
 
             endringer++;
             iteratorendringer++;
