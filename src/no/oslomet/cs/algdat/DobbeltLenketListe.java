@@ -424,62 +424,104 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             return value;
         }
 
-
-
         @Override
-        public void remove() {
-            if(!fjernOK){
-                throw new IllegalStateException();
+        public void remove(){
+            if(!fjernOK) throw new IllegalStateException();
+            if(iteratorendringer != endringer ) throw new ConcurrentModificationException();
+            if(antall == 0) {
+                return;
             }
-            if(iteratorendringer != endringer){
-                throw new ConcurrentModificationException();
-            }
-            fjernOK = false;
-            Node<T> slett = hode;
-            if(antall == 1){
+            if(antall == 1) {
                 hode = null;
                 hale = null;
             }
-
-            else if(denne == null){
-                slett = hale;
+            else if(denne == null) {
                 hale = hale.forrige;
                 hale.neste = null;
             }
-
-            else if(denne.forrige == null){
-                slett = hode;
-                hode = hode.neste;
-                hode.forrige = null;
+            else if(denne.forrige == hode) {
+                hode = denne;
+                denne.forrige = null;
             }
-
-            else{
-//                slett = denne.forrige;
-//                slett.forrige.neste = slett.neste;
-//                slett.neste.forrige = slett.forrige;
-                denne.forrige = denne.forrige.forrige;
+            else {
                 denne.forrige.forrige.neste = denne;
+                denne.forrige = denne.forrige.forrige;
             }
-//            slett.verdi = null;
-//            slett.forrige = null;
-//            slett.neste = null;
-
             endringer++;
             iteratorendringer++;
-            antall --;
-
+            antall--;
+            fjernOK = false;
         }
-
-
 
     } // class DobbeltLenketListeIterator
 
+//        @Override
+//        public void remove() {
+//            if(!fjernOK){
+//                throw new IllegalStateException();
+//            }
+//            if(iteratorendringer != endringer){
+//                throw new ConcurrentModificationException();
+//            }
+//            fjernOK = false;
+//            Node<T> slett = hode;
+//            if(antall == 1){
+//                hode = null;
+//                hale = null;
+//            }
+//
+//            else if(denne == null){
+//                slett = hale;
+//                hale = hale.forrige;
+//                hale.neste = null;
+//            }
+//
+//            else if(denne.forrige == null){
+//                slett = hode;
+//                hode = hode.neste;
+//                hode.forrige = null;
+//            }
+//
+//            else{
+////                slett = denne.forrige;
+////                slett.forrige.neste = slett.neste;
+////                slett.neste.forrige = slett.forrige;
+//                denne.forrige = denne.forrige.forrige;
+//                denne.forrige.forrige.neste = denne;
+//            }
+////            slett.verdi = null;
+////            slett.forrige = null;
+////            slett.neste = null;
+//
+//            endringer++;
+//            iteratorendringer++;
+//            antall --;
+//
+//        }
+//
+//
+//
+//    } // class DobbeltLenketListeIterator
+
+//    public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
+//        for (int i = 0; i < liste.antall(); i++){
+//            int sjekk = c.compare(liste.hent(i),  liste.hent(i+1));
+//            if (sjekk > 0){
+//                for (int j = i; j < liste.antall(); j++){
+//                    //liste.oppdater();
+//                }
+//            }
+//        }
+//    }
+
     public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
-        for (int i = 0; i < liste.antall(); i++){
-            int sjekk = c.compare(liste.hent(i),  liste.hent(i+1));
-            if (sjekk > 0){
-                for (int j = i; j < liste.antall(); j++){
-                    //liste.oppdater();
+        for(int i=0; i<liste.antall(); i++) {
+            for(int j=0; j<liste.antall()-i-1; j++) {
+                if(c.compare(liste.hent(j), liste.hent(j+1)) > 0) {
+                    T value1 = liste.hent(j);
+                    T value2 = liste.hent(j+1);
+                    liste.oppdater(j, value2);
+                    liste.oppdater(j+1, value1);
                 }
             }
         }
